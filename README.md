@@ -76,3 +76,5 @@ const InputBox = ({ onClick }) => {
 export default InputBox;
 ```
 위의 코드처럼 작성하면 입력창이 변할 때 `TodoList`는 리렌더링이 되지 않는다.
+
+[Back to Top](#목차)
