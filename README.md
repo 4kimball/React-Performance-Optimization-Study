@@ -14,17 +14,65 @@
 
 예를 들어, 아래와 같은 디렉터리 구조로 간단한 todo앱을 만들었다고 해보자.
 ```
-├── App.tsx
-       └── InputBox.tsx
-       └── ToDoList.tsx
+├── App.jsx
+       └── InputBox.jsx
+       └── ToDoList.jsx
 ```
 
-그리고 App.tsx에 `const [text, setText] = useState('')`를 선언하고, `text`와 `setText`를 하위 컴포넌트인 `InputBox.tsx`에 전달한다고 해보자.
+아래는 `App.jsx`의 코드이다.
+```Javascript
+import React, { useState } from 'react';
+import './App.css';
 
-이후 `InputBox.tsx`에서 `<input />`의 값이 변할 때마다 `text`를 업데이트해준다면 입력하는 동안 `App.tsx`가 리렌더링될 것이다.
+import InputBox from './views/InputBox';
+import TodoList from './views/TodoList';
 
-만약 `App.tsx`에서 todo-list를 서버에서 요청하여 수 만개의 데이터를 가져온 후 렌더링한다면 입력할 때마다 리렌더링이 될 것이다.
+function App() {
+  const [text, setText] = useState('');
+  const [todoList, setTodoList] = useState([]);
+  return (
+    <div className="App">
+      <InputBox text={text} setText={setText} />
+      <TodoList todoList={todoList} />
+    </div>
+  );
+}
 
-따라서 `App.tsx`는 입력한 것을 받기만 하면 되기 때문에 `InputBox.tsx`에서 `text`를 선언하여 업데이틀 해주고, 최종적인 입력값을 보내도록 한다.
+export default App;
+```
 
-이처럼 `state`의 위치에 따라서도 웹의 성능을 향상시킬 수 있다.
+위의 코드처럼 할 일을 입력받아 저장하는 상태인 `text`를 선언하였고 이를 아래와 같은 `InputBox` 컴포넌트에 전달하였다. 
+```javascript
+const InputBox = ({ text, setText }) => {
+  return (
+    <>
+      <input value={text} onChange={(e) => setText(e.target.value)} />
+      <button>+</button>
+    </>
+  );
+};
+
+export default InputBox;
+```
+
+위와 같이 작성했을 때 입력값이 변할 때마다 최상위 컴포넌트에 선언한 상태가 변하면서 리렌더링이 발생한다. 이때의 문제는 `TodoList` 컴포넌트까지 리렌더링 된다는 것이다. 
+만약에 서버에서 수많은 데이터를 받아온 후에 렌더링한다면 입력창이 변할 때마다 많은 데이터를 계속 리렌더링해야 할 것이다. 
+
+따라서 아래처럼 `text`상태를 `InputBox`컴포넌트에 선언하고 최종적인 입력 상태만 전달하도록 하는 것이 좋다.
+```javascript
+import { useState } from 'react';
+
+const InputBox = ({ onClick }) => {
+  const [text, setText] = useState('');
+
+  return (
+    <>
+      <input value={text} onChange={(e) => setText(e.target.value)} />
+      <button onClick={() => onClick(text)}>+</button>
+    </>
+  );
+};
+
+export default InputBox;
+```
+위의 코드처럼 작성하면 입력창이 변할 때 `TodoList`는 리렌더링이 되지 않는다.
