@@ -8,7 +8,9 @@
 
 [1. state의 선언 위치](#1.state의-선언-위치)
 
+[2. React.lazy()](#2.React.lazy())
 
+---
 ## 1.state의 선언 위치
 리액트가 리렌더링이 되는 조건 중 하나는 해당 컴포넌트의 `state`가 변경될 때이다. 그렇기 때문에 `state`를 어디에 선언하는지에 따라 성능의 차이를 확인할 수 있다.
 
@@ -78,3 +80,25 @@ export default InputBox;
 위의 코드처럼 작성하면 입력창이 변할 때 `TodoList`는 리렌더링이 되지 않는다.
 
 [Back to Top](#목차)
+
+---
+## 2.React.lazy()
+`React.lazy()`를 통해 동적으로 import할 수 있다. 이를 활용하면 사용자가 불필요하지 않은 코드는 불러오지 않도록 하며, `Suspense`를 같이 사용하여 렌더링이 완료되기 전까지 보여줄 수 있는 컴포넌트를 설정할 수 있다.
+```javascript
+import React, { Suspense } from 'react';
+
+const OtherComponent = React.lazy(() => import('./OtherComponent'));
+
+function MyComponent() {
+  return (
+    <div>
+      <Suspense fallback={<div>Loading...</div>}>
+        <OtherComponent />
+      </Suspense>
+    </div>
+  );
+}
+```
+[Back to Top](#목차)
+
+---
