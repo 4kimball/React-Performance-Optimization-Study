@@ -82,7 +82,7 @@ export default InputBox;
 [Back to Top](#목차)
 
 ---
-## 2.React.lazy()
+## 2.React.lazy
 `React.lazy()`를 통해 동적으로 import할 수 있다. 이를 활용하면 사용자가 불필요하지 않은 코드는 불러오지 않도록 하며, `Suspense`를 같이 사용하여 렌더링이 완료되기 전까지 보여줄 수 있는 컴포넌트를 설정할 수 있다.
 ```javascript
 import React, { Suspense } from 'react';
