@@ -8,7 +8,7 @@
 
 [1. state의 선언 위치](#1.state의-선언-위치)
 
-[2. React.lazy()](#2.React.lazy())
+[2. React.lazy()](#2.React.lazy)
 
 ---
 ## 1.state의 선언 위치
